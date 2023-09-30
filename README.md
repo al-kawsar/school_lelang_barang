@@ -72,7 +72,7 @@ Aplikasi ini menggunakan database MySQL dengan tabel-tabel berikut:
 
 1. Clone repositori ini ke mesin lokal Anda.
 2. Konfigurasi koneksi database Anda dalam file `config.php`.
-3. Import struktur database dan data awal yang terdapat dalam file `database.sql`.
+3. Import struktur database dan data awal yang terdapat dalam file `lelang_php.sql`.
 4. Buka aplikasi di browser Anda dengan mengakses URL lokal (misalnya, `http://localhost/lelang_php`).
 
 ## Kontribusi
