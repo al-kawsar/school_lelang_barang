@@ -39,7 +39,7 @@ Aplikasi ini memiliki tiga jenis pengguna utama:
 Aplikasi ini menggunakan database MySQL dengan tabel-tabel berikut:
 
 - `tb_masyarakat`: Menyimpan data pengguna masyarakat seperti nama lengkap, nama pengguna (username), kata sandi, dan nomor telepon.
-- `tb_barang`: Berisi informasi tentang barang-barang yang akan dilelang, termasuk gambar nama barang, tanggal, harga awal dan deskripsi.
+- `tb_barang`: Berisi informasi tentang barang-barang yang akan dilelang, termasuk gambar, nama barang, tanggal, harga awal dan deskripsi.
 - `tb_lelang`: Menyimpan data lelang, termasuk status lelang (dibuka/ditutup), harga akhir, dan kaitannya dengan pengguna dan barang.
 - `tb_petugas`: Berisi data petugas dengan informasi seperti nama petugas, nama pengguna (username), kata sandi, dan level akses.
 - `tb_level`: Menggambarkan level akses, seperti administrator atau petugas.
