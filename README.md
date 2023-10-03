@@ -6,14 +6,14 @@ Aplikasi Pelelangan Online ini adalah sebuah platform sederhana yang memungkinka
 
 Aplikasi ini memiliki tiga jenis pengguna utama:
 
-- **Admin**: Pengguna dengan hak akses tertinggi. Mereka dapat mengelola pengguna, barang, dan lelang, serta menghasilkan laporan PDF.
+- **Admin**: Pengguna dengan hak akses tertinggi. Mereka dapat mengelola pengguna, barang, dan menghasilkan laporan PDF.
 - **Petugas**: Pengguna yang bertanggung jawab mengelola barang dan lelang.
 - **Masyarakat**: Pengguna biasa yang dapat mengikuti lelang dan menawar harga.
 
 ### Fitur Admin:
 
 - **Login**: Admin dapat masuk ke aplikasi dengan akun mereka.
-- **Registrasi**: Admin dapat mendaftarkan akun baru jika diperlukan.
+- **Registrasi**: Admin dapat mendaftarkan akun baru untuk petugas dengan level administrator atau petugas jika diperlukan.
 - **Logout**: Admin dapat keluar dari aplikasi.
 - **Mengelola Pendataan Barang**: Admin memiliki akses untuk menambah, mengubah, atau menghapus informasi barang yang akan dilelang, termasuk gambar barang.
 - **Mengelola Petugas**: Admin dapat melakukan operasi CRUD (Create, Read, Update, Delete) terhadap data petugas.
