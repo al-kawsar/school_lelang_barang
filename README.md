@@ -58,13 +58,13 @@ Aplikasi ini menggunakan database MySQL dengan tabel-tabel berikut:
 
 ### Langkah 3: Petugas
 
-- Mengelola Pendataan Barang: Petugas dapat menambahkan, mengubah, atau menghapus informasi barang yang akan dilelang, termasuk gambar barang.
+- Mengelola Pendataan Barang: Petugas dapat menambahkan, mengubah, atau menghapus informasi barang yang akan dilelang.
 - Membuka dan Menutup Lelang: Petugas dapat mengatur status lelang untuk barang-barang tertentu.
 - Generate Laporan ke PDF: Petugas dapat membuat laporan PDF tentang barang-barang yang telah dilelang.
 
 ### Langkah 4: Admin
 
-- Admin memiliki hak akses yang sama dengan petugas untuk mengelola data barang, membuka/menutup lelang, dan menghasilkan laporan PDF.
+- Admin memiliki hak akses yang sama dengan petugas untuk mengelola data barang, dan menghasilkan laporan PDF.
 - Admin juga dapat menambahkan, melihat, mengedit, atau menghapus akun petugas seperti proses registrasi masyarakat.
 
 ## Cara Menjalankan Aplikasi
