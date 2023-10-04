@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 03, 2023 at 01:34 AM
+-- Generation Time: Oct 04, 2023 at 02:37 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -24,31 +24,46 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_barang`
+-- Table structure for table `history_lelang`
 --
 
-CREATE TABLE `tb_barang` (
-  `id_barang` int NOT NULL,
-  `gambar` varchar(100) NOT NULL,
-  `nama_barang` varchar(25) NOT NULL,
-  `tgl` date NOT NULL,
-  `harga_awal` int NOT NULL,
-  `deskripsi_barang` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_history_lelang`
---
-
-CREATE TABLE `tb_history_lelang` (
+CREATE TABLE `history_lelang` (
   `id_history` int NOT NULL,
   `id_lelang` int NOT NULL,
   `id_barang` int NOT NULL,
   `id_user` int NOT NULL,
   `penawaran_harga` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `history_lelang`
+--
+
+INSERT INTO `history_lelang` (`id_history`, `id_lelang`, `id_barang`, `id_user`, `penawaran_harga`) VALUES
+(1, 1, 1, 1, 7000000),
+(2, 1, 1, 1, 7500000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_barang`
+--
+
+CREATE TABLE `tb_barang` (
+  `id_barang` int NOT NULL,
+  `gambar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nama_barang` varchar(25) NOT NULL,
+  `tgl` date NOT NULL,
+  `harga_awal` int NOT NULL,
+  `deskripsi_barang` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_barang`
+--
+
+INSERT INTO `tb_barang` (`id_barang`, `gambar`, `nama_barang`, `tgl`, `harga_awal`, `deskripsi_barang`) VALUES
+(1, 'lenovo_20m9000gus_p52_i7_8850h_16gb_512ssd_1423954.jpg', 'Laptop Thinkpad P52', '2023-10-04', 8000000, 'Lenovo ThinkPad P52s Mobile Workstation. Prosesor. 8th Gen Intel® Core™ i7 processor. 8th Gen Intel Core i5 processor. Sistem Operasi. Windows 10 Pro. Layar. 15.6\" 4K UHD (3840 x 2160) IPS (300 nits)');
 
 -- --------------------------------------------------------
 
@@ -65,6 +80,13 @@ CREATE TABLE `tb_lelang` (
   `id_petugas` int NOT NULL,
   `status` enum('dibuka','ditutup') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_lelang`
+--
+
+INSERT INTO `tb_lelang` (`id_lelang`, `id_barang`, `tgl_lelang`, `harga_akhir`, `id_user`, `id_petugas`, `status`) VALUES
+(1, 1, '2023-10-03', 7500000, 1, 2, 'dibuka');
 
 -- --------------------------------------------------------
 
@@ -104,7 +126,8 @@ CREATE TABLE `tb_masyarakat` (
 --
 
 INSERT INTO `tb_masyarakat` (`id_user`, `nama_lengkap`, `username`, `password`, `telp`) VALUES
-(8, 'Hasan', 'HasanH47', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', '1028329739827');
+(1, 'Hasan', 'HasanH47', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', '1028329739827'),
+(2, 'Hasan2', 'HasanH472', '$2y$10$S20ZrqSVqFDsLTIMZNY/quyq.CMQ8QwFSFyJxIaplwTgpnxb50KdK', '120381247912');
 
 -- --------------------------------------------------------
 
@@ -125,27 +148,28 @@ CREATE TABLE `tb_petugas` (
 --
 
 INSERT INTO `tb_petugas` (`id_petugas`, `nama_petugas`, `username`, `password`, `id_level`) VALUES
-(7, 'admin', 'admin', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', 1),
-(8, 'petugas', 'petugas', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', 2);
+(1, 'admin', 'admin', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', 1),
+(2, 'petugas', 'petugas', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', 2),
+(3, 'HasanH', 'HasanH47P', '$2y$10$SMDv2fZYoohFUmbpD.HRuOS5wL13Ypjt..OiyK41hsNM61SJfApuq', 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `tb_barang`
+-- Indexes for table `history_lelang`
 --
-ALTER TABLE `tb_barang`
-  ADD PRIMARY KEY (`id_barang`);
-
---
--- Indexes for table `tb_history_lelang`
---
-ALTER TABLE `tb_history_lelang`
+ALTER TABLE `history_lelang`
   ADD PRIMARY KEY (`id_history`),
   ADD KEY `id_lelang` (`id_lelang`,`id_barang`,`id_user`),
   ADD KEY `id_barang` (`id_barang`),
   ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `tb_barang`
+--
+ALTER TABLE `tb_barang`
+  ADD PRIMARY KEY (`id_barang`);
 
 --
 -- Indexes for table `tb_lelang`
@@ -182,22 +206,22 @@ ALTER TABLE `tb_petugas`
 --
 
 --
+-- AUTO_INCREMENT for table `history_lelang`
+--
+ALTER TABLE `history_lelang`
+  MODIFY `id_history` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `tb_history_lelang`
---
-ALTER TABLE `tb_history_lelang`
-  MODIFY `id_history` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_lelang`
 --
 ALTER TABLE `tb_lelang`
-  MODIFY `id_lelang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_lelang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_level`
@@ -209,25 +233,25 @@ ALTER TABLE `tb_level`
 -- AUTO_INCREMENT for table `tb_masyarakat`
 --
 ALTER TABLE `tb_masyarakat`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_petugas`
 --
 ALTER TABLE `tb_petugas`
-  MODIFY `id_petugas` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_petugas` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `tb_history_lelang`
+-- Constraints for table `history_lelang`
 --
-ALTER TABLE `tb_history_lelang`
-  ADD CONSTRAINT `tb_history_lelang_ibfk_1` FOREIGN KEY (`id_lelang`) REFERENCES `tb_lelang` (`id_lelang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tb_history_lelang_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `tb_barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tb_history_lelang_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `tb_masyarakat` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `history_lelang`
+  ADD CONSTRAINT `history_lelang_ibfk_1` FOREIGN KEY (`id_lelang`) REFERENCES `tb_lelang` (`id_lelang`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `history_lelang_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `tb_barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `history_lelang_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `tb_masyarakat` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tb_lelang`
