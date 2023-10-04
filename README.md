@@ -2,7 +2,7 @@
 
 Aplikasi Pelelangan Online ini adalah sebuah platform sederhana yang memungkinkan pengguna untuk mengikuti lelang barang, menawar harga, dan mengelola data barang. Aplikasi ini dibangun menggunakan teknologi PHP, MySQL, Bootstrap, dan jQuery.
 
-## : Akun
+## Akun
 
     - Hak Akses Administrator
     	Username: admin, HasanH47P
