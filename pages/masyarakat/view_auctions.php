@@ -9,8 +9,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'masyarakat') {
     exit;
 }
 
-    // Query untuk mendapatkan daftar barang yang sedang dilelang dengan status "dibuka"
-    $sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
+// Query untuk mendapatkan daftar barang yang sedang dilelang dengan status "dibuka"
+$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
         IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
         FROM tb_barang b
         LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
@@ -39,6 +39,7 @@ $mysqli->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,6 +47,7 @@ $mysqli->close();
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
+
 <body>
     <?php include '../../includes/navbar.php'; ?>
 
@@ -55,6 +57,7 @@ $mysqli->close();
         <table class="table">
             <thead>
                 <tr>
+                    <th>Gambar Barang</th>
                     <th>Nama Barang</th>
                     <th>Tanggal Lelang</th>
                     <th>Harga Awal</th>
@@ -66,12 +69,13 @@ $mysqli->close();
             <tbody>
                 <?php foreach ($barangs as $barang) : ?>
                     <tr>
+                        <td><img src="../../uploads/<?php echo $barang['gambar']; ?>" alt="<?php echo $barang['nama_barang']; ?>" class="img-thumbnail" width="100"></td>
                         <td><?php echo $barang['nama_barang']; ?></td>
                         <td><?php echo $barang['tgl']; ?></td>
                         <td>Rp <?php echo number_format($barang['harga_awal'], 0, ",", "."); ?></td>
                         <td>Rp <?php echo number_format($barang['harga_tertinggi'], 0, ",", "."); ?></td>
                         <td><?php echo $barang['deskripsi_barang']; ?></td>
-                        <td><a href="place_bid.php?id=<?php echo $barang['id_barang']; ?>" class="btn btn-primary">Tawar Harga</a></td>
+                        <td><a href="place_bid.php?id_barang=<?php echo $barang['id_barang']; ?>" class="btn btn-primary">Tawar Harga</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -9,6 +9,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'masyarakat') {
   exit;
 }
 
+if (!isset($_GET['id_barang'])) {
+  header('Location: view_auctions.php');
+}
+
 // Inisialisasi variabel
 $user_id = $_SESSION['user_id'];
 $barang_err = '';
@@ -46,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 }
 
-$barang_id = $_GET['id']; // Mengambil parameter id dari URL
+$barang_id = $_GET['id_barang']; // Mengambil parameter id dari URL
 
 // Query untuk mendapatkan detail barang yang akan ditawar berdasarkan id_barang
 $sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang,
