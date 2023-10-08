@@ -17,7 +17,8 @@ $barang_err = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Ambil data dari formulir
   $nama_barang = $_POST['nama_barang'];
-  $tgl = $_POST['tgl'];
+  // $tgl = date('Y-m-d', strtotime($_POST['tgl']));
+  $tgl = date('Y-m-d');
   $harga_awal = $_POST['harga_awal'];
   $deskripsi_barang = $_POST['deskripsi_barang'];
 
@@ -30,10 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   move_uploaded_file($gambar_tmp, $gambar_dir . $gambar_barang);
 
   // Query untuk menambahkan barang ke dalam tabel tb_barang
-  $sql = "INSERT INTO tb_barang (nama_barang, tgl, harga_awal, deskripsi_barang, gambar, id_petugas) VALUES (?, ?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO tb_barang (nama_barang, gambar, tgl, harga_awal, deskripsi_barang) VALUES (?, ?, ?, ?, ?)";
 
   if ($stmt = $mysqli->prepare($sql)) {
-    $stmt->bind_param('ssisii', $nama_barang, $tgl, $harga_awal, $deskripsi_barang, $gambar_barang, $user_id);
+    $stmt->bind_param('sssss', $nama_barang, $gambar_barang, $tgl, $harga_awal, $deskripsi_barang);
     if ($stmt->execute()) {
       header('location: manage_items.php');
       exit;
@@ -45,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
   // Query untuk mendapatkan daftar barang yang dimiliki oleh petugas
-  $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.id_petugas
+  $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         FROM tb_barang b
-        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
+        -- INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
         ORDER BY b.tgl ASC";
 
   $barang_list = [];
@@ -85,10 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label>Nama Barang</label>
         <input type="text" name="nama_barang" class="form-control" placeholder="Nama Barang" required>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Tanggal</label>
         <input type="date" name="tgl" class="form-control" required>
-      </div>
+      </div> -->
       <div class="form-group">
         <label>Harga Awal (IDR)</label>
         <input type="number" name="harga_awal" class="form-control" placeholder="Harga Awal" required>

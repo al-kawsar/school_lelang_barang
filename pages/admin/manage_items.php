@@ -45,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Query untuk mendapatkan daftar barang yang dimiliki oleh admin
-$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.id_petugas
+$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         FROM tb_barang b
-        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
+        -- INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
         ORDER BY b.tgl ASC";
 
 $barang_list = [];

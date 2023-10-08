@@ -33,10 +33,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 }
 
-// Query untuk mendapatkan daftar barang yang dimiliki oleh petugas
-$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.id_petugas
+// Query untuk mendapatkan daftar barang yang sudah di lelang oleh petugas
+$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         FROM tb_barang b
         INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
+        ORDER BY b.tgl ASC";
+
+$barang_lelang = [];
+
+if ($result = $mysqli->query($sql)) {
+  while ($row = $result->fetch_assoc()) {
+    $barang_lelang[] = $row;
+  }
+  $result->free();
+}
+
+// Query untuk mendapatkan daftar barang yang dimiliki oleh petugas
+$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
+        FROM tb_barang b
+        -- INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
         ORDER BY b.tgl ASC";
 
 $barang_list = [];
@@ -93,7 +108,7 @@ if ($result = $mysqli->query($sql)) {
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($barang_list as $barang) : ?>
+        <?php foreach ($barang_lelang as $barang) : ?>
           <tr>
             <td><img src="../../uploads/<?php echo $barang['gambar']; ?>" alt="<?php echo $barang['nama_barang']; ?>" class="img-thumbnail" width="100"></td>
             <td><?php echo $barang['nama_barang']; ?></td>
