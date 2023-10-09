@@ -56,16 +56,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //         GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
 //         ORDER BY b.tgl ASC";
 
-$sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
+  $user_id = $_SESSION['user_id'];
+
+  // Query untuk mendapatkan daftar lelang yang telah diikuti oleh pengguna
+  $sql = "SELECT DISTINCT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
         IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
         FROM tb_barang b
         LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
         INNER JOIN tb_lelang l ON b.id_barang = l.id_barang AND l.status = 'dibuka'
+        INNER JOIN history_lelang hl ON l.id_lelang = hl.id_lelang
+        WHERE hl.id_user = ?
         GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         ORDER BY b.tgl ASC";
 
+  if ($stmt = $mysqli->prepare($sql)) {
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+  }
 
-$result = $mysqli->query($sql);
+
 ?>
 
 <!DOCTYPE html>
