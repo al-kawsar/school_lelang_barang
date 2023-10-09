@@ -14,7 +14,7 @@ $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.desk
         IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
         FROM tb_barang b
         LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
-        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang AND l.status = 'dibuka'
+        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang AND l.status = 'dibuka'
         GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         ORDER BY b.tgl ASC";
 
