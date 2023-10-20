@@ -12,26 +12,34 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'petugas') {
 // Inisialisasi variabel
 $user_id = $_SESSION['user_id'];
 
-// Query untuk mendapatkan daftar barang yang dikelola oleh petugas
-$sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang,
-                l.status
+  // Query untuk mendapatkan daftar barang yang dikelola oleh petugas
+  $sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.status
         FROM tb_barang b
-        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
-        WHERE l.id_petugas = ?
+        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
         ORDER BY b.tgl DESC";
+
 
 $barang_list = [];
 
-if ($stmt = $mysqli->prepare($sql)) {
-  $stmt->bind_param('i', $user_id);
-  if ($stmt->execute()) {
-    $result = $stmt->get_result();
+  // if ($stmt = $mysqli->prepare($sql)) {
+  //   $stmt->bind_param('i', $user_id);
+  //   if ($stmt->execute()) {
+  //     $result = $stmt->get_result();
+  //     while ($row = $result->fetch_assoc()) {
+  //       $barang_list[] = $row;
+  //     }
+  //   }
+  //   $stmt->close();
+  // }
+
+  $result = $mysqli->query($sql);
+
+  if ($result) {
     while ($row = $result->fetch_assoc()) {
       $barang_list[] = $row;
     }
   }
-  $stmt->close();
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +60,7 @@ if ($stmt = $mysqli->prepare($sql)) {
     <h2>Dashboard - Petugas</h2>
     <p>Selamat datang, Petugas!</p>
 
-    <h3>Daftar Barang yang Anda Kelola:</h3>
+    <h3>Daftar Barang yang Anda Lelang:</h3>
     <table class="table table-bordered">
       <thead>
         <tr>

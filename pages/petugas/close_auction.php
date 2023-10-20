@@ -1,4 +1,4 @@
-  <?php
+<?php
   // Sisipkan konfigurasi dan file database
   require_once '../../config/config.php';
   require_once '../../config/database.php';

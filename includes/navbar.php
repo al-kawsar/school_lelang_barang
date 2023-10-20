@@ -7,9 +7,6 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo BASE_URL; ?>">Beranda</a>
-        </li>
         <?php
         // Periksa apakah pengguna sudah login atau belum
         if (isset($_SESSION['user_id'])) {
@@ -55,9 +52,6 @@
                               </li>
                               <li class="nav-item">
                                 <a class="nav-link" href="view_auctions.php">Lihat Lelang</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="place_bid.php">Tawar Harga</a>
                               </li>
                               <li class="nav-item">
                               <a class="nav-link" href="' . BASE_URL . '/pages/logout.php">Logout</a>

@@ -17,23 +17,28 @@ $barang_err = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Ambil data dari formulir
   $nama_barang = $_POST['nama_barang'];
-  $tgl = $_POST['tgl'];
-  $harga_awal = $_POST['harga_awal'];
+  // $tgl = date('Y-m-d', strtotime($_POST['tgl']));
+  $tgl = date('Y-m-d');
+  // $harga_awal = $_POST['harga_awal'];
+  $harga_awal = str_replace(".", "", $_POST['harga_awal']);
   $deskripsi_barang = $_POST['deskripsi_barang'];
 
   // Mengunggah gambar
   $gambar_barang = $_FILES['gambar_barang']['name'];
   $gambar_tmp = $_FILES['gambar_barang']['tmp_name'];
   $gambar_dir = '../../uploads/';
+  // Generate a unique name for the uploaded image
+  $timestamp = time(); // Get the current timestamp
+  $unique_image_name = $timestamp . '_' . $_FILES['gambar_barang']['name']; // Combine timestamp and the original image name
 
-  // Memindahkan gambar ke direktori upload
-  move_uploaded_file($gambar_tmp, $gambar_dir . $gambar_barang);
+  // Move the image to the upload directory with the unique name
+  move_uploaded_file($_FILES['gambar_barang']['tmp_name'], $gambar_dir . $unique_image_name);
 
   // Query untuk menambahkan barang ke dalam tabel tb_barang
-  $sql = "INSERT INTO tb_barang (nama_barang, tgl, harga_awal, deskripsi_barang, gambar, id_petugas) VALUES (?, ?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO tb_barang (nama_barang, gambar, tgl, harga_awal, deskripsi_barang) VALUES (?, ?, ?, ?, ?)";
 
   if ($stmt = $mysqli->prepare($sql)) {
-    $stmt->bind_param('ssisii', $nama_barang, $tgl, $harga_awal, $deskripsi_barang, $gambar_barang, $user_id);
+    $stmt->bind_param('sssss', $nama_barang, $unique_image_name, $tgl, $harga_awal, $deskripsi_barang);
     if ($stmt->execute()) {
       header('location: manage_items.php');
       exit;
@@ -44,20 +49,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 }
 
-// Query untuk mendapatkan daftar barang yang dimiliki oleh admin
-$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
+  // Query untuk mendapatkan daftar barang yang dimiliki oleh admin
+  $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         FROM tb_barang b
         -- INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
         ORDER BY b.tgl ASC";
 
-$barang_list = [];
+  $barang_list = [];
 
-if ($result = $mysqli->query($sql)) {
-  while ($row = $result->fetch_assoc()) {
-    $barang_list[] = $row;
+  if ($result = $mysqli->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
+      $barang_list[] = $row;
+    }
+    $result->free();
   }
-  $result->free();
-}
 
 ?>
 
@@ -67,7 +72,7 @@ if ($result = $mysqli->query($sql)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Items - Admin</title>
+  <title>Manage Items - Administrator</title>
   <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
@@ -76,8 +81,8 @@ if ($result = $mysqli->query($sql)) {
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
-    <h2>Manage Items - Admin</h2>
-    <p>Selamat datang, Admin!</p>
+    <h2>Manage Items - Administrator</h2>
+    <p>Selamat datang, Administrator!</p>
 
     <h3>Tambah Barang:</h3>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
@@ -85,13 +90,13 @@ if ($result = $mysqli->query($sql)) {
         <label>Nama Barang</label>
         <input type="text" name="nama_barang" class="form-control" placeholder="Nama Barang" required>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Tanggal</label>
         <input type="date" name="tgl" class="form-control" required>
-      </div>
+      </div> -->
       <div class="form-group">
         <label>Harga Awal (IDR)</label>
-        <input type="number" name="harga_awal" class="form-control" placeholder="Harga Awal" required>
+        <input type="text" name="harga_awal" class="form-control" placeholder="Harga Awal" required>
       </div>
       <div class="form-group">
         <label>Deskripsi Barang</label>
@@ -134,5 +139,21 @@ if ($result = $mysqli->query($sql)) {
       </tbody>
     </table>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const hargaInput = document.querySelector('input[name="harga_awal"]');
 
+      hargaInput.addEventListener("input", function(e) {
+        // Menghilangkan semua karakter selain angka
+        let angka = e.target.value.replace(/\D/g, "");
+
+        // Format angka dengan pemisah ribuan
+        e.target.value = formatRibuan(angka);
+      });
+
+      function formatRibuan(angka) {
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+    });
+  </script>
   <?php include '../../includes/footer.php'; ?>

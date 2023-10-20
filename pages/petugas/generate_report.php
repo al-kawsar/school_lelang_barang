@@ -64,14 +64,16 @@ if ($stmt = $mysqli->prepare($sql)) {
         </thead>
         <tbody>
           <?php foreach ($barang_list as $barang) : ?>
-            <tr>
-              <td><?php echo $barang['nama_barang']; ?></td>
-              <td><?php echo $barang['tgl']; ?></td>
-              <td><?php echo $barang['harga_awal']; ?></td>
-              <td><?php echo $barang['harga_akhir']; ?></td>
-              <td><?php echo $barang['nama_lengkap']; ?></td>
-              <td><?php echo $barang['telp']; ?></td>
-            </tr>
+            <?php if ($barang['harga_akhir'] !== null && $barang['nama_lengkap'] !== null && $barang['telp'] !== null) : ?>
+              <tr>
+                <td><?php echo $barang['nama_barang']; ?></td>
+                <td><?php echo $barang['tgl']; ?></td>
+                <td><?php echo $barang['harga_awal']; ?></td>
+                <td><?php echo $barang['harga_akhir']; ?></td>
+                <td><?php echo $barang['nama_lengkap']; ?></td>
+                <td><?php echo $barang['telp']; ?></td>
+              </tr>
+            <?php endif; ?>
           <?php endforeach; ?>
         </tbody>
       </table>

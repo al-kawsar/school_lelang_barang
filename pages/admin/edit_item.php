@@ -37,52 +37,19 @@ function uploadImage($file)
   return false;
 }
 
-// Proses ketika formulir diubah
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  // Ambil data dari formulir
-  $nama_barang = $_POST['nama_barang'];
-  $tgl = $_POST['tgl'];
-  $harga_awal = $_POST['harga_awal'];
-  $deskripsi_barang = $_POST['deskripsi_barang'];
-  $gambar_barang = $_FILES['gambar_barang'];
+// Fungsi untuk menghasilkan nama file unik dengan format "timestamp+nameImage"
+function generateUniqueFileName($file)
+{
+  $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+  $uniqueName = time() . '_' . $file['name']; // Menggunakan time() sebagai timestamp
+  return $uniqueName;
+}
 
-  // Cek apakah ada gambar yang diunggah
-  if ($gambar_barang['error'] === 0) {
-    $gambar_path = uploadImage($gambar_barang);
-    if ($gambar_path) {
-      // Menghapus direktori dari nama file gambar
-      $gambar_path = basename($gambar_path);
-
-      // Query untuk mengupdate informasi barang, termasuk gambar
-      $sql = "UPDATE tb_barang SET nama_barang = ?, tgl = ?, harga_awal = ?, deskripsi_barang = ?, gambar = ? WHERE id_barang = ?";
-
-      if ($stmt = $mysqli->prepare($sql)) {
-        $stmt->bind_param('ssisss', $nama_barang, $tgl, $harga_awal, $deskripsi_barang, $gambar_path, $barang_id);
-        if ($stmt->execute()) {
-          header('location: manage_auctions.php');
-          exit;
-        } else {
-          $barang_err = 'Terjadi kesalahan. Silakan coba lagi nanti.';
-        }
-        $stmt->close();
-      }
-    } else {
-      $barang_err = 'Gagal mengunggah gambar.';
-    }
-  } else {
-    // Query untuk mengupdate informasi barang tanpa gambar
-    $sql = "UPDATE tb_barang SET nama_barang = ?, tgl = ?, harga_awal = ?, deskripsi_barang = ? WHERE id_barang = ?";
-
-    if ($stmt = $mysqli->prepare($sql)) {
-      $stmt->bind_param('ssiss', $nama_barang, $tgl, $harga_awal, $deskripsi_barang, $barang_id);
-      if ($stmt->execute()) {
-        header('location: manage_auctions.php');
-        exit;
-      } else {
-        $barang_err = 'Terjadi kesalahan. Silakan coba lagi nanti.';
-      }
-      $stmt->close();
-    }
+// Fungsi untuk menghapus gambar lama
+function deleteOldImage($file_path)
+{
+  if (file_exists($file_path)) {
+    unlink($file_path);
   }
 }
 
@@ -101,13 +68,73 @@ if ($stmt = $mysqli->prepare($sql)) {
     $stmt->fetch();
     $stmt->close();
   } else {
-    header('location: manage_auctions.php');
+    header('location: manage_items.php');
     exit;
   }
 } else {
-  header('location: manage_auctions.php');
+  header('location: manage_items.php');
   exit;
 }
+
+// Saat Anda mengunggah gambar baru, simpan nama gambar lama
+$gambar_lama = $gambar_barang;
+
+// Proses ketika formulir diubah
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  // Ambil data dari formulir
+  $nama_barang = $_POST['nama_barang'];
+  // $tgl = $_POST['tgl'];
+  $tgl = date('Y-m-d');
+  // $harga_awal = $_POST['harga_awal'];
+  $harga_awal = str_replace(".", "", $_POST['harga_awal']);
+  $deskripsi_barang = $_POST['deskripsi_barang'];
+  $gambar_barang = $_FILES['gambar_barang'];
+
+  // Cek apakah ada gambar yang diunggah
+  if ($gambar_barang['error'] === 0) {
+    // Buat nama unik untuk file gambar
+    $gambar_path = generateUniqueFileName($gambar_barang);
+
+    // Pindahkan file ke direktori yang ditentukan
+    if (move_uploaded_file($gambar_barang['tmp_name'], '../../uploads/' . $gambar_path)) {
+      // Hapus gambar lama jika nama gambar baru tidak sama dengan gambar lama
+      if ($gambar_lama !== $gambar_path) {
+        deleteOldImage('../../uploads/' . $gambar_lama);
+      }
+
+      // Query untuk mengupdate informasi barang, termasuk gambar
+      $sql = "UPDATE tb_barang SET nama_barang = ?, tgl = ?, harga_awal = ?, deskripsi_barang = ?, gambar = ? WHERE id_barang = ?";
+
+      if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param('ssisss', $nama_barang, $tgl, $harga_awal, $deskripsi_barang, $gambar_path, $barang_id);
+        if ($stmt->execute()) {
+          header('location: manage_items.php');
+          exit;
+        } else {
+          $barang_err = 'Terjadi kesalahan. Silakan coba lagi nanti.';
+        }
+        $stmt->close();
+      }
+    } else {
+      $barang_err = 'Gagal mengunggah gambar.';
+    }
+  } else {
+    // Query untuk mengupdate informasi barang tanpa gambar
+    $sql = "UPDATE tb_barang SET nama_barang = ?, tgl = ?, harga_awal = ?, deskripsi_barang = ? WHERE id_barang = ?";
+
+    if ($stmt = $mysqli->prepare($sql)) {
+      $stmt->bind_param('ssiss', $nama_barang, $tgl, $harga_awal, $deskripsi_barang, $barang_id);
+      if ($stmt->execute()) {
+        header('location: manage_items.php');
+        exit;
+      } else {
+        $barang_err = 'Terjadi kesalahan. Silakan coba lagi nanti.';
+      }
+      $stmt->close();
+    }
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +143,7 @@ if ($stmt = $mysqli->prepare($sql)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Item - Admin</title>
+  <title>Edit Item - Administrator</title>
   <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
@@ -125,7 +152,7 @@ if ($stmt = $mysqli->prepare($sql)) {
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
-    <h2>Edit Item - Admin</h2>
+    <h2>Edit Item - Administrator</h2>
 
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $barang_id; ?>" method="post" enctype="multipart/form-data">
       <div class="form-group">
@@ -137,13 +164,13 @@ if ($stmt = $mysqli->prepare($sql)) {
         <label>Nama Barang</label>
         <input type="text" name="nama_barang" class="form-control" value="<?php echo $nama_barang; ?>" required>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Tanggal</label>
         <input type="date" name="tgl" class="form-control" value="<?php echo $tgl; ?>" required>
-      </div>
+      </div> -->
       <div class="form-group">
         <label>Harga Awal (IDR)</label>
-        <input type="number" name="harga_awal" class="form-control" value="<?php echo $harga_awal; ?>" required>
+        <input type="text" name="harga_awal" class="form-control" value="<?php echo $harga_awal; ?>" required>
       </div>
       <div class="form-group">
         <label>Deskripsi Barang</label>
@@ -153,7 +180,23 @@ if ($stmt = $mysqli->prepare($sql)) {
       <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
 
-    <a href="manage_auctions.php" class="btn btn-secondary mt-2">Kembali</a>
+    <a href="manage_items.php" class="btn btn-secondary mt-2">Kembali</a>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const hargaInput = document.querySelector('input[name="harga_awal"]');
 
+      hargaInput.addEventListener("input", function(e) {
+        // Menghilangkan semua karakter selain angka
+        let angka = e.target.value.replace(/\D/g, "");
+
+        // Format angka dengan pemisah ribuan
+        e.target.value = formatRibuan(angka);
+      });
+
+      function formatRibuan(angka) {
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+    });
+  </script>
   <?php include '../../includes/footer.php'; ?>

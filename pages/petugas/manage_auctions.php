@@ -51,7 +51,8 @@ if ($result = $mysqli->query($sql)) {
 // Query untuk mendapatkan daftar barang yang dimiliki oleh petugas
 $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
         FROM tb_barang b
-        -- INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
+        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
+        WHERE l.id_barang IS NULL
         ORDER BY b.tgl ASC";
 
 $barang_list = [];
@@ -101,10 +102,12 @@ if ($result = $mysqli->query($sql)) {
     <table class="table table-bordered">
       <thead>
         <tr>
+          <th>Gambar</th>
           <th>Nama Barang</th>
           <th>Tanggal</th>
           <th>Harga Awal (IDR)</th>
           <th>Deskripsi Barang</th>
+          <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -115,6 +118,7 @@ if ($result = $mysqli->query($sql)) {
             <td><?php echo $barang['tgl']; ?></td>
             <td><?php echo $barang['harga_awal']; ?></td>
             <td><?php echo $barang['deskripsi_barang']; ?></td>
+            <td><a href="detail_auction.php?id_barang=<?php echo $barang['id_barang']; ?>" class='btn btn-primary'>Detail</a></td>
           </tr>
         <?php endforeach; ?>
       </tbody>

@@ -15,36 +15,36 @@ $barang_err = '';
 $barang_id = $harga_penawaran = '';
 
 // Memproses penawaran harga saat formulir diajukan
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (empty(trim($_POST['barang_id']))) {
-    $barang_err = 'Pilih barang untuk menawar harga.';
-  } else {
-    $barang_id = trim($_POST['barang_id']);
-  }
+// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//   if (empty(trim($_POST['barang_id']))) {
+//     $barang_err = 'Pilih barang untuk menawar harga.';
+//   } else {
+//     $barang_id = trim($_POST['barang_id']);
+//   }
 
-  if (empty(trim($_POST['harga_penawaran']))) {
-    $barang_err = 'Masukkan harga penawaran.';
-  } else {
-    $harga_penawaran = trim($_POST['harga_penawaran']);
-  }
+//   if (empty(trim($_POST['harga_penawaran']))) {
+//     $barang_err = 'Masukkan harga penawaran.';
+//   } else {
+//     $harga_penawaran = trim($_POST['harga_penawaran']);
+//   }
 
-  // Memeriksa apakah ada kesalahan input sebelum melakukan penawaran
-  if (empty($barang_err)) {
-    // Masukkan penawaran harga ke dalam history_lelang
-    $sql = "INSERT INTO history_lelang (id_lelang, id_barang, id_user, penawaran_harga) VALUES (?, ?, ?, ?)";
-    if ($stmt = $mysqli->prepare($sql)) {
-      $stmt->bind_param('iiii', $barang_id, $barang_id, $user_id, $harga_penawaran);
-      if ($stmt->execute()) {
-        // Penawaran berhasil, alihkan kembali ke dashboard
-        header('location: dashboard.php');
-        exit;
-      } else {
-        echo 'Oops! Terjadi kesalahan. Silakan coba lagi nanti.';
-      }
-      $stmt->close();
-    }
-  }
-}
+//   // Memeriksa apakah ada kesalahan input sebelum melakukan penawaran
+//   if (empty($barang_err)) {
+//     // Masukkan penawaran harga ke dalam history_lelang
+//     $sql = "INSERT INTO history_lelang (id_lelang, id_barang, id_user, penawaran_harga) VALUES (?, ?, ?, ?)";
+//     if ($stmt = $mysqli->prepare($sql)) {
+//       $stmt->bind_param('iiii', $barang_id, $barang_id, $user_id, $harga_penawaran);
+//       if ($stmt->execute()) {
+//         // Penawaran berhasil, alihkan kembali ke dashboard
+//         header('location: dashboard.php');
+//         exit;
+//       } else {
+//         echo 'Oops! Terjadi kesalahan. Silakan coba lagi nanti.';
+//       }
+//       $stmt->close();
+//     }
+//   }
+// }
 
 // Query untuk mendapatkan daftar barang yang sedang dilelang dengan status "dibuka"
 // $sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
@@ -56,24 +56,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //         GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
 //         ORDER BY b.tgl ASC";
 
-  $user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'];
 
   // Query untuk mendapatkan daftar lelang yang telah diikuti oleh pengguna
   $sql = "SELECT DISTINCT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
-        IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
+        IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi, l.status AS status_lelang
         FROM tb_barang b
         LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
-        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang AND l.status = 'dibuka'
+        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
         INNER JOIN history_lelang hl ON l.id_lelang = hl.id_lelang
         WHERE hl.id_user = ?
-        GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
+        GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.status
         ORDER BY b.tgl ASC";
 
-  if ($stmt = $mysqli->prepare($sql)) {
-    $stmt->bind_param('i', $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-  }
+
+if ($stmt = $mysqli->prepare($sql)) {
+  $stmt->bind_param('i', $user_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+}
 
 
 ?>
@@ -115,17 +116,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           echo "<td>Rp " . number_format($row['harga_awal'], 0, ",", ".") . "</td>";
           echo "<td>Rp " . number_format($row['harga_tertinggi'], 0, ",", ".") . "</td>";
           echo "<td>";
-          echo '<form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="post">';
-          echo '<input type="hidden" name="barang_id" value="' . $row['id_barang'] . '">';
-          echo '<div class="form-group">';
-          echo '<input type="text" name="harga_penawaran" class="form-control" placeholder="Penawaran Harga">';
-          echo '</div>';
-          echo '<button type="submit" class="btn btn-primary">Tawar Harga</button>';
-          echo '</form>';
+
+          // Tampilkan tombol sesuai dengan status lelang
+          if ($row['status_lelang'] == 'dibuka') {
+            echo "<a href='place_bid.php?id_barang=" . $row['id_barang'] . "' class='btn btn-primary'>Tawar</a>";
+          } elseif ($row['status_lelang'] == 'ditutup') {
+            echo "<a href='detail_auction.php?id_barang=" . $row['id_barang'] . "' class='btn btn-primary'>Detail</a>";
+          }
+
           echo "</td>";
           echo "</tr>";
         }
         ?>
+
       </tbody>
     </table>
     <span class="text-danger"><?php echo $barang_err; ?></span>

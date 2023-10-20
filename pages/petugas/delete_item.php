@@ -13,8 +13,31 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'petugas') {
 $barang_id = $_GET['id'];
 $barang_err = '';
 
+function deleteLocalImage($file_path) {
+  if (file_exists($file_path)) {
+    unlink($file_path);
+  }
+}
+
 // Proses ketika permintaan penghapusan dikirimkan
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  // Query untuk menghapus barang dari tabel tb_barang
+  $sql_get_image = "SELECT gambar FROM tb_barang WHERE id_barang = ?";
+  
+  if ($stmt_get_image = $mysqli->prepare($sql_get_image)) {
+    $stmt_get_image->bind_param('i', $barang_id);
+    if ($stmt_get_image->execute()) {
+      $stmt_get_image->store_result();
+      if ($stmt_get_image->num_rows == 1) {
+        $stmt_get_image->bind_result($gambar_barang);
+        $stmt_get_image->fetch();
+        // Remove the image file from the local folder
+        deleteLocalImage('../../uploads/' . $gambar_barang);
+      }
+      $stmt_get_image->close();
+    }
+  }
+
   // Query untuk menghapus barang dari tabel tb_barang
   $sql_delete_barang = "DELETE FROM tb_barang WHERE id_barang = ?";
 
