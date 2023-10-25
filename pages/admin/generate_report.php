@@ -68,8 +68,8 @@ if ($stmt = $mysqli->prepare($sql)) {
               <tr>
                 <td><?php echo $barang['nama_barang']; ?></td>
                 <td><?php echo $barang['tgl']; ?></td>
-                <td><?php echo $barang['harga_awal']; ?></td>
-                <td><?php echo $barang['harga_akhir']; ?></td>
+                <td><?php echo number_format($barang['harga_awal'], 0, ",", "."); ?></td>
+                <td><?php echo number_format($barang['harga_akhir'], 0, ",", "."); ?></td>
                 <td><?php echo $barang['nama_lengkap']; ?></td>
                 <td><?php echo $barang['telp']; ?></td>
               </tr>

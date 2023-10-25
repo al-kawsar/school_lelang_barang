@@ -116,7 +116,7 @@ if ($result = $mysqli->query($sql)) {
             <td><img src="../../uploads/<?php echo $barang['gambar']; ?>" alt="<?php echo $barang['nama_barang']; ?>" class="img-thumbnail" width="100"></td>
             <td><?php echo $barang['nama_barang']; ?></td>
             <td><?php echo $barang['tgl']; ?></td>
-            <td><?php echo $barang['harga_awal']; ?></td>
+            <td><?php echo number_format($barang['harga_awal'], 0, ",", "."); ?></td>
             <td><?php echo $barang['deskripsi_barang']; ?></td>
             <td><a href="detail_auction.php?id_barang=<?php echo $barang['id_barang']; ?>" class='btn btn-primary'>Detail</a></td>
           </tr>
