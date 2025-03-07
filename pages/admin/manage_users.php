@@ -23,7 +23,7 @@ if ($result = $mysqli->query($sql)) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
   <meta charset="UTF-8">
@@ -33,7 +33,7 @@ if ($result = $mysqli->query($sql)) {
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
