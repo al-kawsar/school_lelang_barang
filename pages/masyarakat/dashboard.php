@@ -59,15 +59,15 @@ $barang_id = $harga_penawaran = '';
 $user_id = $_SESSION['user_id'];
 
   // Query untuk mendapatkan daftar lelang yang telah diikuti oleh pengguna
-  $sql = "SELECT DISTINCT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
-        IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi, l.status AS status_lelang
-        FROM tb_barang b
-        LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
-        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
-        INNER JOIN history_lelang hl ON l.id_lelang = hl.id_lelang
-        WHERE hl.id_user = ?
-        GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.status
-        ORDER BY b.tgl ASC";
+$sql = "SELECT DISTINCT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang,
+IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi, l.status AS status_lelang
+FROM tb_barang b
+LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
+LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
+INNER JOIN history_lelang hl ON l.id_lelang = hl.id_lelang
+WHERE hl.id_user = ?
+GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.status
+ORDER BY b.tgl ASC";
 
 
 if ($stmt = $mysqli->prepare($sql)) {
@@ -80,7 +80,7 @@ if ($stmt = $mysqli->prepare($sql)) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
   <meta charset="UTF-8">
@@ -90,7 +90,7 @@ if ($stmt = $mysqli->prepare($sql)) {
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
