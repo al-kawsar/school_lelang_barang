@@ -33,7 +33,7 @@ CREATE TABLE `history_lelang` (
   `id_barang` int NOT NULL,
   `id_user` int NOT NULL,
   `penawaran_harga` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `history_lelang`
@@ -51,12 +51,12 @@ INSERT INTO `history_lelang` (`id_history`, `id_lelang`, `id_barang`, `id_user`,
 
 CREATE TABLE `tb_barang` (
   `id_barang` int NOT NULL,
-  `gambar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `gambar` varchar(255) NOT NULL,
   `nama_barang` varchar(25) NOT NULL,
   `tgl` date NOT NULL,
   `harga_awal` int NOT NULL,
-  `deskripsi_barang` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `deskripsi_barang` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_barang`
@@ -79,7 +79,7 @@ CREATE TABLE `tb_lelang` (
   `id_user` int DEFAULT NULL,
   `id_petugas` int NOT NULL,
   `status` enum('dibuka','ditutup') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_lelang`
@@ -97,7 +97,7 @@ INSERT INTO `tb_lelang` (`id_lelang`, `id_barang`, `tgl_lelang`, `harga_akhir`, 
 CREATE TABLE `tb_level` (
   `id_level` int NOT NULL,
   `level` enum('administrator','petugas') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_level`
@@ -119,7 +119,7 @@ CREATE TABLE `tb_masyarakat` (
   `username` varchar(25) NOT NULL,
   `password` varchar(255) NOT NULL,
   `telp` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_masyarakat`
@@ -141,16 +141,16 @@ CREATE TABLE `tb_petugas` (
   `username` varchar(25) NOT NULL,
   `password` varchar(255) NOT NULL,
   `id_level` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_petugas`
 --
 
 INSERT INTO `tb_petugas` (`id_petugas`, `nama_petugas`, `username`, `password`, `id_level`) VALUES
-(1, 'admin', 'admin', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', 1),
-(2, 'petugas', 'petugas', '$2y$10$UMcZFpdqG7ONGAyO3BsgzOYXt7VRAh1sB2g8YjvGt82jv4.xLIUiu', 2),
-(3, 'HasanH', 'HasanH47P', '$2y$10$SMDv2fZYoohFUmbpD.HRuOS5wL13Ypjt..OiyK41hsNM61SJfApuq', 1);
+(1, 'admin', 'admin', '$2y$10$GF2Pk.T3px2jIXTGDVMjHOARaZ5IIqDlWgHEYNIxO6Q0KTPYPc.96', 1),
+(2, 'Ardiansyah', 'ardi', '$2y$10$zUaBuWZYw1S855Qg0TobZOC6giDCHEEl7nsRLUqtHNNRXozQcJX/.', 2),
+(3, 'Ahsan Putra', 'ahsan', '$2y$10$VwO0v9/u7yMOo.KkNRXR6OQGx7.HBWKUMKgdaVxlzm3HmCpCS01VS', 1);
 
 --
 -- Indexes for dumped tables
@@ -160,46 +160,46 @@ INSERT INTO `tb_petugas` (`id_petugas`, `nama_petugas`, `username`, `password`, 
 -- Indexes for table `history_lelang`
 --
 ALTER TABLE `history_lelang`
-  ADD PRIMARY KEY (`id_history`),
-  ADD KEY `id_lelang` (`id_lelang`,`id_barang`,`id_user`),
-  ADD KEY `id_barang` (`id_barang`),
-  ADD KEY `id_user` (`id_user`);
+ADD PRIMARY KEY (`id_history`),
+ADD KEY `id_lelang` (`id_lelang`,`id_barang`,`id_user`),
+ADD KEY `id_barang` (`id_barang`),
+ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  ADD PRIMARY KEY (`id_barang`);
+ADD PRIMARY KEY (`id_barang`);
 
 --
 -- Indexes for table `tb_lelang`
 --
 ALTER TABLE `tb_lelang`
-  ADD PRIMARY KEY (`id_lelang`),
-  ADD KEY `id_barang` (`id_barang`),
-  ADD KEY `id_user` (`id_user`,`id_petugas`),
-  ADD KEY `id_petugas` (`id_petugas`);
+ADD PRIMARY KEY (`id_lelang`),
+ADD KEY `id_barang` (`id_barang`),
+ADD KEY `id_user` (`id_user`,`id_petugas`),
+ADD KEY `id_petugas` (`id_petugas`);
 
 --
 -- Indexes for table `tb_level`
 --
 ALTER TABLE `tb_level`
-  ADD PRIMARY KEY (`id_level`);
+ADD PRIMARY KEY (`id_level`);
 
 --
 -- Indexes for table `tb_masyarakat`
 --
 ALTER TABLE `tb_masyarakat`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `username` (`username`);
+ADD PRIMARY KEY (`id_user`),
+ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `tb_petugas`
 --
 ALTER TABLE `tb_petugas`
-  ADD PRIMARY KEY (`id_petugas`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD KEY `id_level` (`id_level`);
+ADD PRIMARY KEY (`id_petugas`),
+ADD UNIQUE KEY `username` (`username`),
+ADD KEY `id_level` (`id_level`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -209,37 +209,37 @@ ALTER TABLE `tb_petugas`
 -- AUTO_INCREMENT for table `history_lelang`
 --
 ALTER TABLE `history_lelang`
-  MODIFY `id_history` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+MODIFY `id_history` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_lelang`
 --
 ALTER TABLE `tb_lelang`
-  MODIFY `id_lelang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+MODIFY `id_lelang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_level`
 --
 ALTER TABLE `tb_level`
-  MODIFY `id_level` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+MODIFY `id_level` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_masyarakat`
 --
 ALTER TABLE `tb_masyarakat`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_petugas`
 --
 ALTER TABLE `tb_petugas`
-  MODIFY `id_petugas` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `id_petugas` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -249,23 +249,23 @@ ALTER TABLE `tb_petugas`
 -- Constraints for table `history_lelang`
 --
 ALTER TABLE `history_lelang`
-  ADD CONSTRAINT `history_lelang_ibfk_1` FOREIGN KEY (`id_lelang`) REFERENCES `tb_lelang` (`id_lelang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `history_lelang_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `tb_barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `history_lelang_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `tb_masyarakat` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `history_lelang_ibfk_1` FOREIGN KEY (`id_lelang`) REFERENCES `tb_lelang` (`id_lelang`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `history_lelang_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `tb_barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `history_lelang_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `tb_masyarakat` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tb_lelang`
 --
 ALTER TABLE `tb_lelang`
-  ADD CONSTRAINT `tb_lelang_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `tb_barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tb_lelang_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `tb_masyarakat` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tb_lelang_ibfk_3` FOREIGN KEY (`id_petugas`) REFERENCES `tb_petugas` (`id_petugas`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `tb_lelang_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `tb_barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `tb_lelang_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `tb_masyarakat` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `tb_lelang_ibfk_3` FOREIGN KEY (`id_petugas`) REFERENCES `tb_petugas` (`id_petugas`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tb_petugas`
 --
 ALTER TABLE `tb_petugas`
-  ADD CONSTRAINT `tb_petugas_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `tb_level` (`id_level`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `tb_petugas_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `tb_level` (`id_level`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
