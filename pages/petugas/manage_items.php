@@ -50,46 +50,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
   // Query untuk mendapatkan daftar barang yang dimiliki oleh petugas
-  $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
-        FROM tb_barang b
+$sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
+FROM tb_barang b
         -- INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
         ORDER BY b.tgl ASC";
 
-  $barang_list = [];
+        $barang_list = [];
 
-  if ($result = $mysqli->query($sql)) {
-    while ($row = $result->fetch_assoc()) {
-      $barang_list[] = $row;
-    }
-    $result->free();
-  }
+        if ($result = $mysqli->query($sql)) {
+          while ($row = $result->fetch_assoc()) {
+            $barang_list[] = $row;
+          }
+          $result->free();
+        }
 
-?>
+        ?>
 
-<!DOCTYPE html>
-<html lang="en">
+        <!DOCTYPE html>
+        <html lang="en" class="h-100">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Items - Petugas</title>
-  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Manage Items - Petugas</title>
+          <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+          <link rel="stylesheet" href="../../assets/css/style.css">
+        </head>
 
-<body>
-  <?php include '../../includes/navbar.php'; ?>
+        <body class="d-flex flex-column h-100">
+          <?php include '../../includes/navbar.php'; ?>
 
-  <div class="container mt-4">
-    <h2>Manage Items - Petugas</h2>
-    <p>Selamat datang, Petugas!</p>
+          <div class="container mt-4">
+            <h2>Manage Items - Petugas</h2>
+            <p>Selamat datang, Petugas!</p>
 
-    <h3>Tambah Barang:</h3>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
-      <div class="form-group">
-        <label>Nama Barang</label>
-        <input type="text" name="nama_barang" class="form-control" placeholder="Nama Barang" required>
-      </div>
+            <h3>Tambah Barang:</h3>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label>Nama Barang</label>
+                <input type="text" name="nama_barang" class="form-control" placeholder="Nama Barang" required>
+              </div>
       <!-- <div class="form-group">
         <label>Tanggal</label>
         <input type="date" name="tgl" class="form-control" required>

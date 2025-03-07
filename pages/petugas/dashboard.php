@@ -13,12 +13,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'petugas') {
 $user_id = $_SESSION['user_id'];
 
   // Query untuk mendapatkan daftar barang yang dikelola oleh petugas
-  $sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.status, IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
-        FROM tb_barang b
-        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
-        LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
-        GROUP BY b.id_barang, b.harga_awal, b.deskripsi_barang, l.status
-        ORDER BY b.tgl DESC";
+$sql = "SELECT b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, l.status, IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
+FROM tb_barang b
+INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
+LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
+GROUP BY b.id_barang, b.harga_awal, b.deskripsi_barang, l.status
+ORDER BY b.tgl DESC";
 
 $barang_list = [];
 
@@ -33,18 +33,18 @@ $barang_list = [];
   //   $stmt->close();
   // }
 
-  $result = $mysqli->query($sql);
+$result = $mysqli->query($sql);
 
-  if ($result) {
-    while ($row = $result->fetch_assoc()) {
-      $barang_list[] = $row;
-    }
+if ($result) {
+  while ($row = $result->fetch_assoc()) {
+    $barang_list[] = $row;
   }
+}
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
   <meta charset="UTF-8">
@@ -54,7 +54,7 @@ $barang_list = [];
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
