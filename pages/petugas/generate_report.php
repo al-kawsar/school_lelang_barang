@@ -11,10 +11,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'petugas') {
 
 // Query untuk mendapatkan daftar barang yang dikelola oleh petugas
 $sql = "SELECT b.nama_barang, b.tgl, b.harga_awal, l.harga_akhir, m.nama_lengkap, m.telp
-        FROM tb_barang b
-        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
-        LEFT JOIN tb_masyarakat m ON l.id_user = m.id_user
-        ORDER BY b.tgl ASC";
+FROM tb_barang b
+LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
+LEFT JOIN tb_masyarakat m ON l.id_user = m.id_user
+ORDER BY b.tgl ASC";
 
 $barang_list = [];
 
@@ -32,7 +32,7 @@ if ($stmt = $mysqli->prepare($sql)) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
   <meta charset="UTF-8">
@@ -42,7 +42,7 @@ if ($stmt = $mysqli->prepare($sql)) {
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
