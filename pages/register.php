@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <?php include '../includes/header.php'; ?>
 <!-- <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
   <meta charset="UTF-8">
@@ -112,45 +112,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body> -->
+<body class="d-flex flex-column h-100"> -->
 
-<div class="container mt-4">
-  <h2>Registrasi</h2>
-  <p>Silakan isi formulir registrasi di bawah ini untuk bergabung dengan Aplikasi Pelelangan Online.</p>
-  <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-    <div class="form-group">
-      <label for="nama_lengkap">Nama Lengkap</label>
-      <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control <?php echo (!empty($nama_lengkap_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $nama_lengkap; ?>">
-      <span class="invalid-feedback"><?php echo $nama_lengkap_err; ?></span>
-    </div>
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-      <span class="invalid-feedback"><?php echo $username_err; ?></span>
-    </div>
-    <div class="form-group">
-      <label for="password">Kata Sandi</label>
-      <input type="password" name="password" id="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
-      <span class="invalid-feedback"><?php echo $password_err; ?></span>
-    </div>
-    <div class="form-group">
-      <label for="confirm_password">Konfirmasi Kata Sandi</label>
-      <input type="password" name="confirm_password" id="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-      <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
-    </div>
-    <div class="form-group">
-      <label for="telp">Nomor Telepon</label>
-      <input type="text" name="telp" id="telp" class="form-control <?php echo (!empty($telp_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $telp; ?>">
-      <span class="invalid-feedback"><?php echo $telp_err; ?></span>
-    </div>
-    <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="Daftar">
-      <a href="login.php" class="btn btn-secondary">Login</a>
-    </div>
-  </form>
-</div>
+  <div class="container mt-4">
+    <h2>Registrasi</h2>
+    <p>Silakan isi formulir registrasi di bawah ini untuk bergabung dengan Aplikasi Pelelangan Online.</p>
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+      <div class="form-group">
+        <label for="nama_lengkap">Nama Lengkap</label>
+        <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control <?php echo (!empty($nama_lengkap_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $nama_lengkap; ?>">
+        <span class="invalid-feedback"><?php echo $nama_lengkap_err; ?></span>
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+        <span class="invalid-feedback"><?php echo $username_err; ?></span>
+      </div>
+      <div class="form-group">
+        <label for="password">Kata Sandi</label>
+        <input type="password" name="password" id="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+        <span class="invalid-feedback"><?php echo $password_err; ?></span>
+      </div>
+      <div class="form-group">
+        <label for="confirm_password">Konfirmasi Kata Sandi</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+        <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+      </div>
+      <div class="form-group">
+        <label for="telp">Nomor Telepon</label>
+        <input type="text" name="telp" id="telp" class="form-control <?php echo (!empty($telp_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $telp; ?>">
+        <span class="invalid-feedback"><?php echo $telp_err; ?></span>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Daftar">
+        <a href="login.php" class="btn btn-secondary">Login</a>
+      </div>
+    </form>
+  </div>
 
-<?php include '../includes/footer.php'; ?>
+  <?php include '../includes/footer.php'; ?>
 
 <!-- <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
