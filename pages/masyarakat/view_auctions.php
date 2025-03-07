@@ -11,12 +11,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'masyarakat') {
 
 // Query untuk mendapatkan daftar barang yang sedang dilelang dengan status "dibuka"
 $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang, 
-        IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
-        FROM tb_barang b
-        LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
-        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang AND l.status = 'dibuka'
-        GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
-        ORDER BY b.tgl ASC";
+IFNULL(MAX(h.penawaran_harga), b.harga_awal) AS harga_tertinggi
+FROM tb_barang b
+LEFT JOIN history_lelang h ON b.id_barang = h.id_barang
+INNER JOIN tb_lelang l ON b.id_barang = l.id_barang AND l.status = 'dibuka'
+GROUP BY b.id_barang, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
+ORDER BY b.tgl ASC";
 
 
 
@@ -38,7 +38,7 @@ $mysqli->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
     <meta charset="UTF-8">
@@ -48,7 +48,7 @@ $mysqli->close();
     <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?php include '../../includes/navbar.php'; ?>
 
     <div class="container mt-4">

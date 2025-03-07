@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Query untuk mendapatkan daftar barang yang sudah di lelang oleh petugas
 $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
-        FROM tb_barang b
-        INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
-        ORDER BY b.tgl ASC";
+FROM tb_barang b
+INNER JOIN tb_lelang l ON b.id_barang = l.id_barang
+ORDER BY b.tgl ASC";
 
 $barang_lelang = [];
 
@@ -50,10 +50,10 @@ if ($result = $mysqli->query($sql)) {
 
 // Query untuk mendapatkan daftar barang yang dimiliki oleh petugas
 $sql = "SELECT b.id_barang, b.gambar, b.nama_barang, b.tgl, b.harga_awal, b.deskripsi_barang
-        FROM tb_barang b
-        LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
-        WHERE l.id_barang IS NULL
-        ORDER BY b.tgl ASC";
+FROM tb_barang b
+LEFT JOIN tb_lelang l ON b.id_barang = l.id_barang
+WHERE l.id_barang IS NULL
+ORDER BY b.tgl ASC";
 
 $barang_list = [];
 
@@ -67,7 +67,7 @@ if ($result = $mysqli->query($sql)) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
   <meta charset="UTF-8">
@@ -77,7 +77,7 @@ if ($result = $mysqli->query($sql)) {
   <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
   <?php include '../../includes/navbar.php'; ?>
 
   <div class="container mt-4">
