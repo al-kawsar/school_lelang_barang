@@ -1,4 +1,4 @@
-# Aplikasi Pelelangan Online Berbasis Website Sederhana
+# Aplikasi Pelelangan Online Berbasis Website Sederhana 
 
 Aplikasi Pelelangan Online ini adalah sebuah platform sederhana yang memungkinkan pengguna untuk mengikuti lelang barang, menawar harga, dan mengelola data barang. Aplikasi ini dibangun menggunakan teknologi PHP, MySQL dan Bootstrap.
 
